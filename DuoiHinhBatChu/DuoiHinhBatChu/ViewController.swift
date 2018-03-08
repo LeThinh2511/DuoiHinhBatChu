@@ -9,15 +9,24 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+
+    @IBOutlet var roundLabel: UILabel!
+    @IBOutlet var PointLabel: UILabel!
+    
+    @IBAction func reset(_ sender: UIButton)
+    {
+        print("reset tapped")
+        roundLabel.text = "round 12"
+    }
+    
+    @IBAction func submit(_ sender: UIButton)
+    {
+        print("submit tapped")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let question: Question = Question(answear: "MATMA", image: "matma")
-        print(question.answear)
-        print(question.image)
-        print(question.hint.count)
-        print(question.hint)
     }
 
     override func didReceiveMemoryWarning() {
