@@ -88,7 +88,6 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gIk-SR-Pqi">
                                 <rect key="frame" x="48" y="390" width="279" height="83.5"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-oj-gQr">
                                 <rect key="frame" x="48" y="567.5" width="279" height="83.5"/>
@@ -134,6 +133,9 @@
                     </view>
                     <connections>
                         <outlet property="PointLabel" destination="VOq-T3-z7m" id="QpI-FT-HWH"/>
+                        <outlet property="answerButton" destination="gIk-SR-Pqi" id="E9Q-TE-t5C"/>
+                        <outlet property="hintButton" destination="dLc-oj-gQr" id="wdM-Ts-EI6"/>
+                        <outlet property="imageQuestion" destination="V3Y-vm-rha" id="GhJ-dJ-vy5"/>
                         <outlet property="roundLabel" destination="etM-Av-8yE" id="TFN-t3-pmg"/>
                     </connections>
                 </viewController>
