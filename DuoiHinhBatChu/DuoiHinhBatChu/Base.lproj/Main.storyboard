@@ -30,15 +30,23 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                </userDefinedRuntimeAttributes>
                                             </label>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="backgroundColor" red="0.9512968884431855" green="1" blue="0.42956888220797795" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstItem="etM-Av-8yE" firstAttribute="centerY" secondItem="qOd-hV-HVl" secondAttribute="centerY" id="04a-7P-9Qe"/>
                                             <constraint firstItem="etM-Av-8yE" firstAttribute="width" secondItem="qOd-hV-HVl" secondAttribute="width" id="6tA-Zo-4Y3"/>
                                             <constraint firstItem="etM-Av-8yE" firstAttribute="centerX" secondItem="qOd-hV-HVl" secondAttribute="centerX" id="Sf7-Y1-8hQ"/>
                                             <constraint firstItem="etM-Av-8yE" firstAttribute="height" secondItem="qOd-hV-HVl" secondAttribute="height" id="UuF-je-6xZ"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="20"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOq-T3-z7m">
                                         <rect key="frame" x="247.5" y="8" width="71.5" height="25.5"/>
@@ -70,12 +78,22 @@
                                     <constraint firstItem="v0G-WJ-a9h" firstAttribute="top" secondItem="iYW-nS-klb" secondAttribute="top" constant="8" id="vmV-KE-3Kv"/>
                                     <constraint firstItem="qOd-hV-HVl" firstAttribute="height" secondItem="iYW-nS-klb" secondAttribute="height" multiplier="1.4" id="yzu-8P-KdS"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HYN-s1-2m1">
                                 <rect key="frame" x="16" y="81.5" width="343" height="292"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="V3Y-vm-rha">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="292"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                <integer key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -88,24 +106,28 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gIk-SR-Pqi">
                                 <rect key="frame" x="53.5" y="390" width="268" height="83.5"/>
-                                <color key="backgroundColor" red="0.9616699219" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dLc-oj-gQr">
                                 <rect key="frame" x="53.5" y="567.5" width="268" height="83.5"/>
-                                <color key="backgroundColor" red="0.9616699219" green="0.95686274510000002" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ipm-Wi-YUx">
+                            <button opaque="NO" tag="-1" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ipm-Wi-YUx">
                                 <rect key="frame" x="163" y="505.5" width="49" height="30"/>
                                 <color key="backgroundColor" red="0.17513566949120607" green="1" blue="0.068317850587819695" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="Submit">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="submit:" destination="BYZ-38-t0r" eventType="touchUpInside" id="V8G-bV-Eey"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.82381375120434708" green="0.78283366921823783" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="gIk-SR-Pqi" firstAttribute="top" secondItem="HYN-s1-2m1" secondAttribute="bottom" constant="16" id="2UP-qj-p5n"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="iYW-nS-klb" secondAttribute="trailing" constant="16" id="4b5-3z-Opi"/>

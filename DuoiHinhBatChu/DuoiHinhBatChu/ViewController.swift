@@ -30,12 +30,14 @@ class ViewController: UIViewController {
     var numButtonInLine: CGFloat = 8
     var buttonMarginX: CGFloat = 4
     var buttonMarginY: CGFloat = 4
+    var losingPoint: Int = 5
+    var winningPoint: Int = 10
     
     var round: Int! = 0
     var point: Int! = 10
     let questionSet: [Question] = [
-        Question(answer: "AIMO", image: "aiMo"),
-        Question(answer: "TAMTHAT", image: "tamThat")
+        Question(answer: "TAMTHAT", image: "tamThat"),
+        Question(answer: "AIMO", image: "aiMo")
     ]
     
     
@@ -56,19 +58,19 @@ class ViewController: UIViewController {
         if tempAnswer == questionSet[round].answer && round < (questionSet.count)
         {
             round = round + 1
-            point = point + 10
+            point = point + winningPoint
             updateUI(round: round)
         }
         else
         {
             print("wrong answer")
-            if point - 5 < 0
+            if point - losingPoint < 0
             {
                 point = 0
             }
             else
             {
-                point = point - 5
+                point = point - losingPoint
                 updateUI(round: round)
             }
         }
@@ -105,10 +107,19 @@ class ViewController: UIViewController {
             let roundY = CGFloat(Int(nthRow))
             y = buttonSize * roundY + buttonMarginY * roundY
             
-            //set x = 0 if change to new line
+            //set x value if change to new line
             if nthRow == roundY
             {
-                x = 0
+                var numOfMissButton: CGFloat = CGFloat(charArray.count) - numButtonInLine * (roundY + 1)
+                if numOfMissButton >= 0
+                {
+                    x = 0
+                }
+                else
+                {
+                    numOfMissButton = 0 - numOfMissButton
+                    x = ((numOfMissButton * buttonSize) + (buttonMarginX * (numOfMissButton - 1)))/2
+                }
             }
             let button: UIButton = UIButton()
             button.frame = CGRect(x: x, y: y, width: buttonSize, height: buttonSize)
@@ -134,6 +145,7 @@ class ViewController: UIViewController {
             y = 0
         }
     }
+    
     
     @objc func buttonTouchUpInside(sender: UIButton)
     {
