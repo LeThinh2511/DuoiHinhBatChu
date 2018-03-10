@@ -64,18 +64,18 @@ class ViewController: UIViewController {
         pointLabel.text = "\(point!)"
         imageQuestion.image = UIImage(named: questionSet[round].image)
         
-        addButtonToView(targetView: answerButtonArea, numOfChar: questionSet[round].answear.count)
+        addButtonToView(targetView: answerButtonArea, charArray: [], numOfButton: questionSet[round].answear.count)
         
-        addButtonToView(targetView: hintButtonArea, numOfChar: questionSet[round].hint.count)
+        addButtonToView(targetView: hintButtonArea, charArray: questionSet[round].hint, numOfButton: questionSet[round].hint.count)
         
     }
     
-    func addButtonToView(targetView: UIView, numOfChar: Int)
+    func addButtonToView(targetView: UIView, charArray: [Character],numOfButton: Int)
     {
         var x: CGFloat = 0
         var y: CGFloat = 0
         
-        for i in 0..<numOfChar
+        for i in 0..<numOfButton
         {
             let nthRow = CGFloat(i)/numButtonInLine
             let roundY = CGFloat(Int(nthRow))
@@ -88,7 +88,17 @@ class ViewController: UIViewController {
             }
             let button: UIButton = UIButton()
             button.frame = CGRect(x: x, y: y, width: buttonSize, height: buttonSize)
-            button.setTitle("T", for: UIControlState.normal)
+            
+            if charArray.isEmpty
+            {
+                button.setTitle("", for: UIControlState.normal)
+            }
+            else
+            {
+                let letter: String = String(charArray[i])
+                button.setTitle(letter, for: UIControlState.normal)
+            }
+            
             button.backgroundColor = UIColor.lightGray
             targetView.addSubview(button)
             
@@ -99,10 +109,6 @@ class ViewController: UIViewController {
         
     }
     
-    func buttonTappedEvent(sender: UIButton)
-    {
-        
-    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

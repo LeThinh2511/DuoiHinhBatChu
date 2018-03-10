@@ -33,7 +33,6 @@ class Question
             let index: String.Index = temp.index(temp.startIndex, offsetBy: offset)
             hint.append(temp[index])
             temp.remove(at: index)
-            print(hint)
         }
     }
 }
