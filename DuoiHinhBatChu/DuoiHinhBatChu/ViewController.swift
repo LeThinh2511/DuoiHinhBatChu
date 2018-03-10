@@ -32,7 +32,7 @@ class ViewController: UIViewController {
     var buttonMarginY: CGFloat = 4
     
     var round: Int! = 0
-    var point: Int! = 0
+    var point: Int! = 10
     let questionSet: [Question] = [
         Question(answer: "AIMO", image: "aiMo"),
         Question(answer: "TAMTHAT", image: "tamThat")
@@ -41,12 +41,37 @@ class ViewController: UIViewController {
     
     @IBAction func reset(_ sender: UIButton)
     {
-        print("reset tapped")
+        round = 0
+        point = 10
+        updateUI(round: round)
     }
     
     @IBAction func submit(_ sender: UIButton)
     {
-        print("submit tapped")
+        var tempAnswer: String = ""
+        for i in questionSet[round].answerArray
+        {
+            tempAnswer += String(i)
+        }
+        if tempAnswer == questionSet[round].answer && round < (questionSet.count)
+        {
+            round = round + 1
+            point = point + 10
+            updateUI(round: round)
+        }
+        else
+        {
+            print("wrong answer")
+            if point - 5 < 0
+            {
+                point = 0
+            }
+            else
+            {
+                point = point - 5
+                updateUI(round: round)
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -67,7 +92,6 @@ class ViewController: UIViewController {
         addButtonToView(targetView: answerButtonArea, charArray: questionSet[round].answerArray,  buttonTag: 1)
         
         addButtonToView(targetView: hintButtonArea, charArray: questionSet[round].hintArray, buttonTag: 2)
-        
     }
     
     func addButtonToView(targetView: UIView, charArray: [Character], buttonTag: Int)
