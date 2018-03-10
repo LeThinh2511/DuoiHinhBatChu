@@ -8,39 +8,32 @@
 
 import Foundation
 
-class Question: Hashable, Equatable
+class Question
 {
-    var hashValue: Int
-    {
-        return answear.hashValue
-    }
-    
-    static func ==(lhs: Question, rhs: Question) -> Bool {
-        return lhs.answear == rhs.answear
-    }
-    
     var image: String
     var answear: String = ""
-    var hint: Dictionary<Int, Character> = [:]
+    var hint: [Character] = []
     
     init(answear: String, image: String) {
         self.answear = answear
         self.image = image
         
-        /* add all characters to the "hint" Set from "answear" */
-        var count: Int = 0
-        for i in self.answear
-        {
-            hint[count] = i
-            count = count + 1
-        }
-        // Adding more character to the "hint" property
-        let numOfChar: Int = self.answear.count/2
+        let numOfLetter = answear.count/2
+        var temp: String = answear
         
-        for _ in 0..<numOfChar
+        for _ in 0..<numOfLetter
         {
-            hint[count] = Character.getARandomLetter()
-            count = count + 1
+            let letter: String = String(Character.getARandomLetter())
+            temp = temp + letter
+        }
+        
+        while !temp.isEmpty
+        {
+            let offset:Int = Int(arc4random_uniform(UInt32(temp.count)))
+            let index: String.Index = temp.index(temp.startIndex, offsetBy: offset)
+            hint.append(temp[index])
+            temp.remove(at: index)
+            print(hint)
         }
     }
 }

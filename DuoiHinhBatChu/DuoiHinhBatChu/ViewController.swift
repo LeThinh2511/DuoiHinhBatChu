@@ -34,7 +34,7 @@ class ViewController: UIViewController {
     var round: Int! = 0
     var point: Int! = 0
     let questionSet: [Question] = [
-        Question(answear: "AIMOdjfkthhhhh", image: "aiMo"),
+        Question(answear: "AIMO", image: "aiMo"),
         Question(answear: "TAMTHAT", image: "tamThat")
     ]
     
@@ -46,7 +46,6 @@ class ViewController: UIViewController {
     
     @IBAction func submit(_ sender: UIButton)
     {
-        print(self.answerButtonArea.frame.width)
         print("submit tapped")
     }
     
@@ -78,7 +77,6 @@ class ViewController: UIViewController {
         
         for i in 0..<numOfChar
         {
-            print(buttonSize)
             let nthRow = CGFloat(i)/numButtonInLine
             let roundY = CGFloat(Int(nthRow))
             y = buttonSize * roundY + buttonMarginY * roundY
@@ -98,6 +96,11 @@ class ViewController: UIViewController {
             
             y = 0
         }
+        
+    }
+    
+    func buttonTappedEvent(sender: UIButton)
+    {
         
     }
     
