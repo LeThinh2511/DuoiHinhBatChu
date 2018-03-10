@@ -11,15 +11,21 @@ import Foundation
 class Question
 {
     var image: String
-    var answear: String = ""
-    var hint: [Character] = []
+    var answer: String = ""
+    var answerArray: [Character] = []
+    var hintArray: [Character] = []
     
-    init(answear: String, image: String) {
-        self.answear = answear
+    init(answer: String, image: String) {
+        self.answer = answer
         self.image = image
         
-        let numOfLetter = answear.count/2
-        var temp: String = answear
+        for _ in answer
+        {
+            self.answerArray.append(".")
+        }
+        
+        let numOfLetter = answer.count/2
+        var temp: String = answer
         
         for _ in 0..<numOfLetter
         {
@@ -27,11 +33,12 @@ class Question
             temp = temp + letter
         }
         
+        //Adding all letter to "hint" from "temp" at random
         while !temp.isEmpty
         {
             let offset:Int = Int(arc4random_uniform(UInt32(temp.count)))
             let index: String.Index = temp.index(temp.startIndex, offsetBy: offset)
-            hint.append(temp[index])
+            hintArray.append(temp[index])
             temp.remove(at: index)
         }
     }
