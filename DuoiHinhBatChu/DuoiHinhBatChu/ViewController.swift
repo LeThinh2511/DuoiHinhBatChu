@@ -36,8 +36,8 @@ class ViewController: UIViewController {
     var round: Int! = 0
     var point: Int! = 10
     let questionSet: [Question] = [
-        Question(answer: "TAMTHAT", image: "tamThat"),
-        Question(answer: "AIMO", image: "aiMo")
+        Question(answer: "AIMO", image: "aiMo"),
+        Question(answer: "TAMTHAT", image: "tamThat")
     ]
     
     
@@ -64,25 +64,27 @@ class ViewController: UIViewController {
         else
         {
             print("wrong answer")
-            if point - losingPoint < 0
+            point = point - losingPoint
+            if point < 0
             {
                 point = 0
             }
-            else
-            {
-                point = point - losingPoint
-                updateUI(round: round)
-            }
+            updateUI(round: round)
         }
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateUI(round: 0)
+        updateUI(round: round)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func loadView() {
+        super.loadView()
     }
     
     func updateUI(round: Int)
@@ -91,13 +93,20 @@ class ViewController: UIViewController {
         pointLabel.text = "\(point!)"
         imageQuestion.image = UIImage(named: questionSet[round].image)
         
+        
+        
         addButtonToView(targetView: answerButtonArea, charArray: questionSet[round].answerArray,  buttonTag: 1)
         
         addButtonToView(targetView: hintButtonArea, charArray: questionSet[round].hintArray, buttonTag: 2)
+        print("Round \(round)")
     }
     
     func addButtonToView(targetView: UIView, charArray: [Character], buttonTag: Int)
     {
+        for view in targetView.subviews {
+            view.removeFromSuperview()
+        }
+        
         var x: CGFloat = 0
         var y: CGFloat = 0
         
@@ -118,7 +127,7 @@ class ViewController: UIViewController {
                 else
                 {
                     numOfMissButton = 0 - numOfMissButton
-                    x = ((numOfMissButton * buttonSize) + (buttonMarginX * (numOfMissButton - 1)))/2
+                    x = (numOfMissButton * buttonSize + buttonMarginX * numOfMissButton)/2
                 }
             }
             let button: UIButton = UIButton()
