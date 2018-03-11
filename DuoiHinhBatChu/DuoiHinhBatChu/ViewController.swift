@@ -12,12 +12,13 @@ import UIKit
 class ViewController: UIViewController {
     
 
-    @IBOutlet var roundLabel: UILabel!
-    @IBOutlet var pointLabel: UILabel!
-    @IBOutlet var imageQuestion: UIImageView!
-    
+    @IBOutlet weak var roundLabel: UILabel!
+    @IBOutlet weak var pointLabel: UILabel!
+    @IBOutlet weak var imageQuestion: UIImageView!
+    @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var answerButtonArea: UIView!
     @IBOutlet weak var hintButtonArea: UIView!
+    @IBOutlet weak var submitButton: UIButton!
     
     var buttonSize: CGFloat
     {
@@ -45,33 +46,69 @@ class ViewController: UIViewController {
     {
         round = 0
         point = 10
+        submitButton.setTitle("Submit", for: .normal)
+        resultLabel.isHidden = true
+        answerButtonArea.isHidden = false
+        hintButtonArea.isHidden = false
         updateUI(round: round)
     }
     
     @IBAction func submit(_ sender: UIButton)
     {
-        var tempAnswer: String = ""
-        for i in questionSet[round].answerArray
+        let nameButton: String = sender.currentTitle!
+        if (nameButton == "Submit")
         {
-            tempAnswer += String(i)
+            var tempAnswer: String = ""
+            for i in questionSet[round].answerArray
+            {
+                tempAnswer += String(i)
+            }
+            if (tempAnswer == questionSet[round].answer)
+            {
+                hintButtonArea.isHidden = true
+                resultLabel.isHidden = false
+                resultLabel.text = "Congratulation!"
+                sender.setTitle("Next", for: .normal)
+            }
+            else
+            {
+                hintButtonArea.isHidden = true
+                answerButtonArea.isHidden = true
+                resultLabel.isHidden = false
+                resultLabel.text = "Wrong answer!"
+                sender.setTitle("Try again", for: .normal)
+                point = point - losingPoint
+                if point < 0
+                {
+                    point = 0
+                }
+                updateUI(round: round)
+            }
         }
-        if tempAnswer == questionSet[round].answer && round < (questionSet.count)
+        else if (nameButton == "Next")
         {
-            round = round + 1
-            point = point + winningPoint
-            updateUI(round: round)
+            if (round < questionSet.count - 1)
+            {
+                round = round + 1
+                point = point + winningPoint
+                updateUI(round: round)
+                sender.setTitle("Submit", for: .normal)
+                hintButtonArea.isHidden = false
+                resultLabel.isHidden = true
+            }
+            else
+            {
+                answerButtonArea.isHidden = true
+                resultLabel.text = "You win!"
+            }
         }
         else
         {
-            print("wrong answer")
-            point = point - losingPoint
-            if point < 0
-            {
-                point = 0
-            }
-            updateUI(round: round)
+            sender.setTitle("Submit", for: .normal)
+            hintButtonArea.isHidden = false
+            answerButtonArea.isHidden = false
+            resultLabel.isHidden = true
         }
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,6 +122,7 @@ class ViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
+        self.view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "background"))
     }
     
     func updateUI(round: Int)
