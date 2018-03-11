@@ -47,15 +47,47 @@ class ViewController: UIViewController {
         round = 0
         point = 10
         submitButton.setTitle("Submit", for: .normal)
-        resultLabel.isHidden = true
-        answerButtonArea.isHidden = false
-        hintButtonArea.isHidden = false
+        
+        for question in questionSet
+        {
+            if question.answerArray.isEmpty
+            {
+                break
+            }
+            else
+            {
+                var charArray: [Character] = []
+                for i in 0..<question.answerArray.count
+                {
+                    charArray.append(question.answerArray[i])
+                    question.answerArray[i] = "."
+                }
+                while !charArray.isEmpty
+                {
+                    let index:Int = Int(arc4random_uniform(UInt32(charArray.count)))
+                    for i in 0..<question.hintArray.count
+                    {
+                        if question.hintArray[i] == "."
+                        {
+                            question.hintArray[i] = charArray[index]
+                            break
+                        }
+                    }
+                    charArray.remove(at: index)
+                }
+            }
+        }
         updateUI(round: round)
     }
     
     @IBAction func submit(_ sender: UIButton)
     {
         let nameButton: String = sender.currentTitle!
+        let alertController = UIAlertController()
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: {
+            (alertAction: UIAlertAction!) in
+            alertController.dismiss(animated: true, completion: nil)
+        }))
         if (nameButton == "Submit")
         {
             var tempAnswer: String = ""
@@ -65,18 +97,16 @@ class ViewController: UIViewController {
             }
             if (tempAnswer == questionSet[round].answer)
             {
-                hintButtonArea.isHidden = true
-                resultLabel.isHidden = false
-                resultLabel.text = "Congratulation!"
+                alertController.title = "Congratulation!"
+                alertController.message = "Correct answer!"
+                self.present(alertController, animated: true, completion: nil)
                 sender.setTitle("Next", for: .normal)
             }
             else
             {
-                hintButtonArea.isHidden = true
-                answerButtonArea.isHidden = true
-                resultLabel.isHidden = false
-                resultLabel.text = "Wrong answer!"
-                sender.setTitle("Try again", for: .normal)
+                alertController.title = "Oops"
+                alertController.message = "Wrong answer!"
+                self.present(alertController, animated: true, completion: nil)
                 point = point - losingPoint
                 if point < 0
                 {
@@ -93,21 +123,13 @@ class ViewController: UIViewController {
                 point = point + winningPoint
                 updateUI(round: round)
                 sender.setTitle("Submit", for: .normal)
-                hintButtonArea.isHidden = false
-                resultLabel.isHidden = true
             }
             else
             {
-                answerButtonArea.isHidden = true
-                resultLabel.text = "You win!"
+                alertController.title = "Congratulation!"
+                alertController.message = "You win!"
+                self.present(alertController, animated: true, completion: nil)
             }
-        }
-        else
-        {
-            sender.setTitle("Submit", for: .normal)
-            hintButtonArea.isHidden = false
-            answerButtonArea.isHidden = false
-            resultLabel.isHidden = true
         }
     }
     
@@ -115,7 +137,7 @@ class ViewController: UIViewController {
         super.viewDidLayoutSubviews()
         updateUI(round: round)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
