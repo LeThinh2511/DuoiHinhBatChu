@@ -15,7 +15,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var roundLabel: UILabel!
     @IBOutlet weak var pointLabel: UILabel!
     @IBOutlet weak var imageQuestion: UIImageView!
-    @IBOutlet weak var resultLabel: UILabel!
     @IBOutlet weak var answerButtonArea: UIView!
     @IBOutlet weak var hintButtonArea: UIView!
     @IBOutlet weak var submitButton: UIButton!
@@ -140,6 +139,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //pointLabel.backgroundColor = UIColor(patternImage: UIImage(named: "pointIcon")!)
     }
     
     override func loadView() {
