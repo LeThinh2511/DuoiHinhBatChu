@@ -14,6 +14,7 @@
 		32A8B57F204EBF1900FF5D2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 32A8B57D204EBF1900FF5D2A /* LaunchScreen.storyboard */; };
 		32A8B587204ECA0000FF5D2A /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A8B586204ECA0000FF5D2A /* Question.swift */; };
 		32A8B589204ED6BE00FF5D2A /* CharacterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32A8B588204ED6BE00FF5D2A /* CharacterExtension.swift */; };
+		32CE343A2056A79A00D9B737 /* MyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32CE34392056A79A00D9B737 /* MyButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		32A8B580204EBF1900FF5D2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		32A8B586204ECA0000FF5D2A /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		32A8B588204ED6BE00FF5D2A /* CharacterExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterExtension.swift; sourceTree = "<group>"; };
+		32CE34392056A79A00D9B737 /* MyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 				32A8B57B204EBF1900FF5D2A /* Assets.xcassets */,
 				32A8B57D204EBF1900FF5D2A /* LaunchScreen.storyboard */,
 				32A8B580204EBF1900FF5D2A /* Info.plist */,
+				32CE34392056A79A00D9B737 /* MyButton.swift */,
 			);
 			path = DuoiHinhBatChu;
 			sourceTree = "<group>";
@@ -143,6 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				32A8B587204ECA0000FF5D2A /* Question.swift in Sources */,
+				32CE343A2056A79A00D9B737 /* MyButton.swift in Sources */,
 				32A8B589204ED6BE00FF5D2A /* CharacterExtension.swift in Sources */,
 				32A8B577204EBF1900FF5D2A /* ViewController.swift in Sources */,
 				32A8B575204EBF1900FF5D2A /* AppDelegate.swift in Sources */,
@@ -284,6 +288,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = DuoiHinhBatChu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = thinhle.DuoiHinhBatChu;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -298,6 +303,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = DuoiHinhBatChu/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = thinhle.DuoiHinhBatChu;
 				PRODUCT_NAME = "$(TARGET_NAME)";

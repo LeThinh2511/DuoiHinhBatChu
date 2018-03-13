@@ -27,11 +27,17 @@ class ViewController: UIViewController {
         
         return size
     }
+    
+    var answerButtonArray: [MyButton] = []
+    var hintButtonArray: [MyButton] = []
+    
     var numButtonInLine: CGFloat = 8
     var buttonMarginX: CGFloat = 4
     var buttonMarginY: CGFloat = 4
     var losingPoint: Int = 5
     var winningPoint: Int = 10
+    var currentIndex: Int = 0
+    var shouldUpdate = true
     
     var round: Int! = 0
     var point: Int! = 10
@@ -45,90 +51,87 @@ class ViewController: UIViewController {
     {
         round = 0
         point = 10
+        currentIndex = 0
         submitButton.setTitle("Submit", for: .normal)
-        
-        for question in questionSet
-        {
-            if question.answerArray.isEmpty
-            {
-                break
-            }
-            else
-            {
-                var charArray: [Character] = []
-                for i in 0..<question.answerArray.count
-                {
-                    charArray.append(question.answerArray[i])
-                    question.answerArray[i] = "."
-                }
-                while !charArray.isEmpty
-                {
-                    let index:Int = Int(arc4random_uniform(UInt32(charArray.count)))
-                    for i in 0..<question.hintArray.count
-                    {
-                        if question.hintArray[i] == "."
-                        {
-                            question.hintArray[i] = charArray[index]
-                            break
-                        }
-                    }
-                    charArray.remove(at: index)
-                }
-            }
-        }
+        shouldUpdate = true
         updateUI(round: round)
+        hintButtonArea.isUserInteractionEnabled = true
+        answerButtonArea.isUserInteractionEnabled = true
     }
     
     @IBAction func submit(_ sender: UIButton)
     {
         let nameButton: String = sender.currentTitle!
         let alertController = UIAlertController()
+        
         alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: {
             (alertAction: UIAlertAction!) in
-            alertController.dismiss(animated: true, completion: nil)
+            //alertController.dismiss(animated: true, completion: nil)
         }))
+        
         if (nameButton == "Submit")
         {
-            var tempAnswer: String = ""
-            for i in questionSet[round].answerArray
-            {
-                tempAnswer += String(i)
-            }
-            if (tempAnswer == questionSet[round].answer)
-            {
-                alertController.title = "Congratulation!"
-                alertController.message = "Correct answer!"
-                self.present(alertController, animated: true, completion: nil)
-                sender.setTitle("Next", for: .normal)
-            }
-            else
-            {
-                alertController.title = "Oops"
-                alertController.message = "Wrong answer!"
-                self.present(alertController, animated: true, completion: nil)
-                point = point - losingPoint
-                if point < 0
-                {
-                    point = 0
-                }
-                updateUI(round: round)
-            }
+            checkAnswer(round: round, alertController: alertController)
         }
         else if (nameButton == "Next")
         {
-            if (round < questionSet.count - 1)
+            goToNextQuestion(alertController: alertController)
+        }
+    }
+    
+    func goToNextQuestion(alertController: UIAlertController)
+    {
+        currentIndex = 0
+        if (round < questionSet.count - 1)
+        {
+            round = round + 1
+            point = point + winningPoint
+            shouldUpdate = true
+            updateUI(round: round)
+            submitButton.setTitle("Submit", for: .normal)
+            hintButtonArea.isUserInteractionEnabled = true
+            answerButtonArea.isUserInteractionEnabled = true
+            
+        }
+        else
+        {
+            alertController.title = "Congratulation!"
+            alertController.message = "You win!"
+            self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    func checkAnswer(round: Int, alertController: UIAlertController)
+    {
+        var tempAnswer = [Character]()
+        let answer = questionSet[round].answer
+        for i in answerButtonArray
+        {
+            if let letter = i.currentTitle
             {
-                round = round + 1
-                point = point + winningPoint
-                updateUI(round: round)
-                sender.setTitle("Submit", for: .normal)
+                tempAnswer.append(Character(letter))
             }
-            else
+        }
+        if (tempAnswer == answer)
+        {
+            alertController.title = "Congratulation!"
+            alertController.message = "Correct answer!"
+            self.present(alertController, animated: true, completion: nil)
+            submitButton.setTitle("Next", for: .normal)
+            answerButtonArea.isUserInteractionEnabled = false
+            hintButtonArea.isUserInteractionEnabled = false
+        }
+        else
+        {
+            alertController.title = "Oops"
+            alertController.message = "Wrong answer!"
+            self.present(alertController, animated: true, completion: nil)
+            point = point - losingPoint
+            if point < 0
             {
-                alertController.title = "Congratulation!"
-                alertController.message = "You win!"
-                self.present(alertController, animated: true, completion: nil)
+                point = 0
             }
+            pointLabel.text = "\(point!)"
         }
     }
     
@@ -137,141 +140,149 @@ class ViewController: UIViewController {
         updateUI(round: round)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        //pointLabel.backgroundColor = UIColor(patternImage: UIImage(named: "pointIcon")!)
-    }
     
     override func loadView() {
         super.loadView()
         self.view.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "background"))
     }
     
-    func updateUI(round: Int)
-    {
-        roundLabel.text = "Round \(round)"
-        pointLabel.text = "\(point!)"
-        imageQuestion.image = UIImage(named: questionSet[round].image)
-        
-        
-        
-        addButtonToView(targetView: answerButtonArea, charArray: questionSet[round].answerArray,  buttonTag: 1)
-        
-        addButtonToView(targetView: hintButtonArea, charArray: questionSet[round].hintArray, buttonTag: 2)
-        print("Round \(round)")
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
-    func addButtonToView(targetView: UIView, charArray: [Character], buttonTag: Int)
+    func updateUI(round: Int)
     {
-        for view in targetView.subviews {
+        if (!self.shouldUpdate)
+        {
+            return
+        }
+        roundLabel.text = "Round \(round)"
+        pointLabel.text = "\(point!)"
+        
+        let question = questionSet[round]
+        
+        imageQuestion.image = UIImage(named: question.image)
+        
+        answerButtonArray = []
+        addButtonToView(target: answerButtonArea, data: question.answer,  buttonTag: 1)
+        
+        hintButtonArray = []
+        addButtonToView(target: hintButtonArea, data: question.hint, buttonTag: 2)
+        print("Round \(round)")
+        shouldUpdate = false
+    }
+    
+    func addButtonToView(target: UIView, data: [Character], buttonTag: Int)
+    {
+        for view in target.subviews {
             view.removeFromSuperview()
         }
         
         var x: CGFloat = 0
         var y: CGFloat = 0
         
-        for i in 0..<charArray.count
+        let count = data.count
+        
+        for i in 0..<count
         {
-            let nthRow = CGFloat(i)/numButtonInLine
-            let roundY = CGFloat(Int(nthRow))
-            y = buttonSize * roundY + buttonMarginY * roundY
+            (x, y) = computeXY(xValue: x, yValue: y, index: i, totalButton: count)
             
-            //set x value if change to new line
-            if nthRow == roundY
-            {
-                var numOfMissButton: CGFloat = CGFloat(charArray.count) - numButtonInLine * (roundY + 1)
-                if numOfMissButton >= 0
-                {
-                    x = 0
-                }
-                else
-                {
-                    numOfMissButton = 0 - numOfMissButton
-                    x = (numOfMissButton * buttonSize + buttonMarginX * numOfMissButton)/2
-                }
-            }
-            let button: UIButton = UIButton()
+            let button = MyButton()
             button.frame = CGRect(x: x, y: y, width: buttonSize, height: buttonSize)
-            
-            let letter: String = String(charArray[i])
-            if letter == "."
+            if (buttonTag == 2)
             {
-                button.setTitle("", for: UIControlState.normal)
-                button.backgroundColor = UIColor.lightGray
+                button.setTitle("\(data[i])", for: UIControlState.normal)
+            }
+            button.backgroundColor = UIColor.lightGray
+            
+            button.tag = buttonTag
+            button.index = i
+            if button.tag == 1
+            {
+                answerButtonArray.append(button)
             }
             else
             {
-                button.setTitle(letter, for: UIControlState.normal)
+                let tempView = UIView()
+                tempView.backgroundColor = UIColor.lightGray
+                tempView.frame = CGRect(x: x, y: y, width: buttonSize, height: buttonSize)
+                target.addSubview(tempView)
+                hintButtonArray.append(button)
                 button.backgroundColor = UIColor.gray
             }
-            button.tag = buttonTag
-            button.accessibilityValue = String(i)
-            targetView.addSubview(button)
             
+            target.addSubview(button)
             button.addTarget(self, action: #selector(ViewController.buttonTouchUpInside), for: .touchUpInside)
-            
-            x += buttonSize + buttonMarginX
-            y = 0
         }
     }
     
-    
-    @objc func buttonTouchUpInside(sender: UIButton)
+    func computeXY(xValue: CGFloat, yValue: CGFloat, index: Int, totalButton: Int) -> (CGFloat, CGFloat)
     {
-        let letter: String = (sender.titleLabel?.text) ?? ""
-        let index: Int = Int(sender.accessibilityValue!)!
+        var x = xValue
+        var y = yValue
+        x += buttonSize + buttonMarginX
+        y = 0
+        
+        let nthRow = CGFloat(index)/numButtonInLine
+        let roundY = CGFloat(Int(nthRow))
+        y = buttonSize * roundY + buttonMarginY * roundY
+        
+        //set x value if change to new line
+        if nthRow == roundY
+        {
+            var numOfMissButton: CGFloat = CGFloat(totalButton) - numButtonInLine * (roundY + 1)
+            if numOfMissButton >= 0
+            {
+                x = 0
+            }
+            else
+            {
+                numOfMissButton = 0 - numOfMissButton
+                x = (numOfMissButton * buttonSize + buttonMarginX * numOfMissButton)/2
+            }
+        }
+        return (x, y)
+    }
+    
+    
+    @objc func buttonTouchUpInside(sender: MyButton)
+    {
+        let letter = sender.titleLabel?.text
         
         if sender.tag == 1
         {
-            if letter != ""
+            sender.setTitle("", for: .normal)
+            sender.titleLabel?.text = ""
+            sender.backgroundColor = UIColor.lightGray
+            hintButtonArray[sender.returnIndex].isHidden = false
+            if (currentIndex > sender.index)
             {
-                //update "answerArray"
-                questionSet[round].answerArray[index] = "."
-                
-                //update "hintArray"
-                for i in 0..<questionSet[round].hintArray.count
-                {
-                    if questionSet[round].hintArray[i] == "."
-                    {
-                        questionSet[round].hintArray[i] = Character(letter)
-                        break
-                    }
-                }
-                updateUI(round: round)
+                currentIndex = sender.index
             }
         }
         else if sender.tag == 2
         {
-            if letter != "" && !isArrayFull(array: questionSet[round].answerArray)
+            if currentIndex == answerButtonArray.count
             {
-                //update "hintArea"
-                questionSet[round].hintArray[index] = "."
-                
-                //update "answerArea"
-                for i in 0..<questionSet[round].answerArray.count
-                {
-                    if questionSet[round].answerArray[i] == "."
-                    {
-                        questionSet[round].answerArray[i] = Character(letter)
-                        break
-                    }
-                }
-                updateUI(round: round)
+                return
             }
+            let currentButton = answerButtonArray[currentIndex]
+            currentButton.returnIndex = sender.index
+            currentButton.backgroundColor = UIColor.gray
+            currentButton.setTitle(letter, for: .normal)
+            sender.isHidden = true
+            var text = ""
+            repeat {
+                currentIndex += 1
+                if (currentIndex < answerButtonArray.count)
+                {
+                    text = answerButtonArray[currentIndex].titleLabel?.text ?? ""
+                }
+            } while (text != ""
+                && currentIndex < answerButtonArray.count)
+            
         }
         
-    }
-    
-    func isArrayFull(array: [Character]) -> Bool
-    {
-        for i in array
-        {
-            if i == "."
-            {
-                return false
-            }
-        }
-        return true
     }
     
     override func didReceiveMemoryWarning() {
