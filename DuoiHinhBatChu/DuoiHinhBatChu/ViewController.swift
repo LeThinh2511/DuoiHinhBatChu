@@ -19,6 +19,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var hintButtonArea: UIView!
     @IBOutlet weak var submitButton: UIButton!
     
+    var answerButtonArray: [MyButton] = []
+    var hintButtonArray: [MyButton] = []
+    
+    var numButtonInLine: CGFloat = 7
+    var buttonMarginX: CGFloat = 4
+    var buttonMarginY: CGFloat = 4
+    var losingPoint: Int = 5
+    var winningPoint: Int = 10
+    var currentIndex: Int = 0
+    var shouldUpdate = true
+    var round: Int! = 0
+    var point: Int! = 10
+    
     var buttonSize: CGFloat
     {
         let widthOfAnswerArea = CGFloat(answerButtonArea.frame.width)
@@ -28,24 +41,15 @@ class ViewController: UIViewController {
         return size
     }
     
-    var answerButtonArray: [MyButton] = []
-    var hintButtonArray: [MyButton] = []
-    
-    var numButtonInLine: CGFloat = 8
-    var buttonMarginX: CGFloat = 4
-    var buttonMarginY: CGFloat = 4
-    var losingPoint: Int = 5
-    var winningPoint: Int = 10
-    var currentIndex: Int = 0
-    var shouldUpdate = true
-    
-    var round: Int! = 0
-    var point: Int! = 10
     let questionSet: [Question] = [
+        Question(answer: "LABAN", image: "laBan"),
+        Question(answer: "CUNGCAU", image: "cungCau"),
+        Question(answer: "BAOCAO", image: "baoCao"),
         Question(answer: "AIMO", image: "aiMo"),
+        Question(answer: "HUNGTHU", image: "hungThu"),
+        Question(answer: "OBAMA", image: "obama"),
         Question(answer: "TAMTHAT", image: "tamThat")
     ]
-    
     
     @IBAction func reset(_ sender: UIButton)
     {
@@ -91,7 +95,6 @@ class ViewController: UIViewController {
             submitButton.setTitle("Submit", for: .normal)
             hintButtonArea.isUserInteractionEnabled = true
             answerButtonArea.isUserInteractionEnabled = true
-            
         }
         else
         {
@@ -107,9 +110,9 @@ class ViewController: UIViewController {
         let answer = questionSet[round].answer
         for i in answerButtonArray
         {
-            if let letter = i.currentTitle
+            if i.currentTitle != "" 
             {
-                tempAnswer.append(Character(letter))
+                tempAnswer.append(Character(i.currentTitle!))
             }
         }
         if (tempAnswer == answer)
@@ -158,9 +161,7 @@ class ViewController: UIViewController {
         }
         roundLabel.text = "Round \(round)"
         pointLabel.text = "\(point!)"
-        
         let question = questionSet[round]
-        
         imageQuestion.image = UIImage(named: question.image)
         
         answerButtonArray = []
@@ -174,7 +175,8 @@ class ViewController: UIViewController {
     
     func addButtonToView(target: UIView, data: [Character], buttonTag: Int)
     {
-        for view in target.subviews {
+        for view in target.subviews
+        {
             view.removeFromSuperview()
         }
         
@@ -193,8 +195,11 @@ class ViewController: UIViewController {
             {
                 button.setTitle("\(data[i])", for: UIControlState.normal)
             }
+            else
+            {
+                button.setTitle("", for: UIControlState.normal)
+            }
             button.backgroundColor = UIColor.lightGray
-            
             button.tag = buttonTag
             button.index = i
             if button.tag == 1
@@ -227,7 +232,7 @@ class ViewController: UIViewController {
         let roundY = CGFloat(Int(nthRow))
         y = buttonSize * roundY + buttonMarginY * roundY
         
-        //set x value if change to new line
+        //changevalue if change to new line
         if nthRow == roundY
         {
             var numOfMissButton: CGFloat = CGFloat(totalButton) - numButtonInLine * (roundY + 1)
